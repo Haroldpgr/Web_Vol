@@ -1,6 +1,6 @@
 // Cliente HTTP del catálogo (Zona 3)
-// OJO: cadena vacía también cae al valor local (evita fetch relativos rotos en prod).
-const apiDeEnv = (import.meta.env.VITE_API_URL || '').trim()
+// OJO: cadena vacía cae al valor local y se quitan `/` finales (evita `//ruta` en prod).
+const apiDeEnv = (import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '')
 export const API_URL = apiDeEnv || 'http://localhost:3000'
 
 export async function fetchVolquetas(params = {}) {
