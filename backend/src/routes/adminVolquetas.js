@@ -222,10 +222,10 @@ router.delete('/:id', async (req, res, next) => {
 
 const subir = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024, files: 10 },
+  limits: { fileSize: 15 * 1024 * 1024, files: 10 },
   fileFilter: (req, file, cb) => {
     if (file.mimetype && file.mimetype.startsWith('image/')) cb(null, true)
-    else cb(new Error('Solo se permiten imágenes.'))
+    else cb(new Error('Solo se permiten imágenes JPG o PNG.'))
   },
 })
 

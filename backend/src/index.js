@@ -68,9 +68,20 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' })
 })
 
+const multer = require('multer')
+
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error(err)
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ ok: false, error: 'Cada foto debe pesar máximo 15 MB.' })
+    }
+    return res.status(400).json({ ok: false, error: 'Error al subir la imagen.' })
+  }
+  if (err.message === 'Solo se permiten imágenes JPG o PNG.') {
+    return res.status(400).json({ ok: false, error: err.message })
+  }
   res.status(500).json({ error: 'Error interno del servidor' })
 })
 

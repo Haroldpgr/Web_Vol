@@ -12,6 +12,7 @@ export default function VolquetaEditar() {
   const [error, setError] = useState('')
   const [ok, setOk] = useState(false)
   const [subiendo, setSubiendo] = useState(false)
+  const [errorFotos, setErrorFotos] = useState('')
 
   const ficha = useQuery({
     queryKey: ['admin-volqueta', id],
@@ -42,9 +43,12 @@ export default function VolquetaEditar() {
 
   const subir = async (archivos) => {
     setSubiendo(true)
+    setErrorFotos('')
     try {
       await adminVolquetas.subirFotos(id, archivos)
       refrescar()
+    } catch (err) {
+      setErrorFotos(err.message || 'No se pudieron subir las fotos.')
     } finally {
       setSubiendo(false)
     }
@@ -113,6 +117,11 @@ export default function VolquetaEditar() {
             <p className="mb-4 mt-1 text-xs text-neutral-500">
               La foto marcada como portada aparece en el catálogo y la ficha.
             </p>
+            {errorFotos && (
+              <p className="mb-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                {errorFotos}
+              </p>
+            )}
             <PhotoManager
               fotos={[...(ficha.data.data.fotos ?? [])].sort((a, b) => a.orden - b.orden)}
               onSubir={subir}

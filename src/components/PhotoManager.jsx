@@ -41,7 +41,7 @@ export default function PhotoManager({
         <p className="mt-2 text-sm font-bold text-industrial">
           {subiendo ? 'Subiendo…' : 'Arrastra fotos aquí o haz clic para elegirlas'}
         </p>
-        <p className="mt-1 text-xs text-neutral-500">JPG o PNG, máx. 5 MB por foto</p>
+        <p className="mt-1 text-xs text-neutral-500">JPG o PNG, máx. 15 MB por foto</p>
       </button>
       <input
         ref={inputRef}
