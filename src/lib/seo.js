@@ -21,9 +21,9 @@ export function siteUrl() {
   return 'https://volquetasaguazul.com'
 }
 
+// La pestaña siempre dice "Volquetas Aguazul": el título solo alimenta OG/Twitter.
 export function setSeo({ title, description, image, url, type = 'website' }) {
   if (title) {
-    document.title = title
     upsertMeta('property', 'og:title', title)
     upsertMeta('name', 'twitter:title', title)
   }

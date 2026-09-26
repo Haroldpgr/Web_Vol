@@ -7,7 +7,6 @@ import VolquetaDetalle from './pages/VolquetaDetalle.jsx'
 import Volquetas from './pages/Volquetas.jsx'
 
 // Secciones pesadas / privadas en chunks separados (carga diferida).
-const DesignPreview = lazy(() => import('./pages/DesignPreview.jsx'))
 const AdminLayout = lazy(() => import('./admin/AdminLayout.jsx'))
 const Dashboard = lazy(() => import('./admin/Dashboard.jsx'))
 const Login = lazy(() => import('./admin/Login.jsx'))
@@ -47,9 +46,8 @@ function RutasAnimadas() {
             <Route path="/" element={<Home />} />
             <Route path="/volquetas" element={<Volquetas />} />
             <Route path="/volquetas/:slug" element={<VolquetaDetalle />} />
-            <Route path="/contacto" element={<Contacto />} />
-            <Route path="/design-preview" element={<DesignPreview />} />
-          </Route>
+          <Route path="/contacto" element={<Contacto />} />
+        </Route>
 
           {/* Rutas admin (privadas, sin enlaces desde el sitio público) */}
           <Route path="/admin/login" element={<Login />} />

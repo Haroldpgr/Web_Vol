@@ -115,11 +115,13 @@ body {
 }
 
 .animate-marquee {
-  animation: marquee-x 28s linear infinite;
+  animation: marquee-x 20s linear infinite;
+  will-change: transform;
 }
 
 .animate-marquee-reverse {
-  animation: marquee-x 34s linear infinite reverse;
+  animation: marquee-x 24s linear infinite reverse;
+  will-change: transform;
 }
 
 .animate-kenburns {

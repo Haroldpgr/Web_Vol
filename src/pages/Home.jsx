@@ -3,6 +3,7 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../components/Button.jsx'
 import Card from '../components/Card.jsx'
+import Cinta from '../components/Cinta.jsx'
 import Reveal from '../components/Reveal.jsx'
 import { API_URL, fetchConfiguracion, fetchVolquetas } from '../lib/api.js'
 import { setSeo, siteUrl } from '../lib/seo.js'
@@ -203,19 +204,7 @@ export default function Home() {
       </header>
 
       {/* MARQUESINA */}
-      <div className="overflow-hidden border-b border-neutral-800 bg-industrial py-3" aria-hidden="true">
-        <div className="animate-marquee flex w-max gap-8 whitespace-nowrap text-sm font-extrabold uppercase tracking-[0.2em] text-white/90">
-          {[0, 1].map((k) => (
-            <span key={k} className="flex gap-8">
-              {marquesina.map((m) => (
-                <span key={`${k}-${m}`} className="flex items-center gap-8">
-                  {m} <span className="text-brand">◆</span>
-                </span>
-              ))}
-            </span>
-          ))}
-        </div>
-      </div>
+      <Cinta items={marquesina} variante="oscura" />
 
       {/* STATS */}
       <section className="mx-auto max-w-6xl px-4">
@@ -331,17 +320,17 @@ export default function Home() {
               ))}
             </div>
             <a
-              href="https://www.google.com/maps/dir/?api=1&destination=5.1725,-72.5556"
+              href="https://www.google.com/maps/dir/?api=1&destination=5.176984366918817,-72.540844431474"
               target="_blank"
               rel="noreferrer"
               className="mt-5 inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm font-bold text-industrial shadow-sm transition-all hover:-translate-y-0.5 hover:shadow"
             >
-              Cómo llegar a Aguazul
+              Cómo llegar a la casa base
             </a>
           </Reveal>
           <Reveal delay={120}>
             <Suspense fallback={<div className="skeleton h-64 w-full rounded-2xl md:h-80" />}>
-              <MapPatio latitud={5.1725} longitud={-72.5556} titulo="Aguazul, Casanare" />
+              <MapPatio latitud={5.176984366918817} longitud={-72.540844431474} titulo="Casa base — Aguazul, Casanare" />
             </Suspense>
           </Reveal>
         </div>
@@ -371,20 +360,7 @@ export default function Home() {
       </section>
 
       {/* CINTA 2: mensajes en movimiento inverso */}
-      <div className="overflow-hidden bg-brand py-3" aria-hidden="true">
-        <div className="animate-marquee-reverse flex w-max gap-8 whitespace-nowrap text-sm font-extrabold uppercase tracking-[0.2em] text-white">
-          {[0, 1].map((k) => (
-            <span key={k} className="flex gap-8">
-              {cinta2.map((m) => (
-                <span key={`${k}-${m}`} className="flex items-center gap-8">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                  {m}
-                </span>
-              ))}
-            </span>
-          ))}
-        </div>
-      </div>
+      <Cinta items={cinta2} variante="naranja" reversa />
 
       {/* FAQ */}
       <section className="mx-auto max-w-3xl px-4 pb-12">

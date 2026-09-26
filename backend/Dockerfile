@@ -3,6 +3,9 @@ FROM node:20-slim
 
 WORKDIR /app
 
+# OpenSSL para los motores de Prisma (evita el warning libssl en slim)
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+
 # Dependencias (incluye dev para Prisma CLI en el arranque)
 COPY package.json package-lock.json* ./
 RUN npm ci
