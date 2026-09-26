@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum rol_admin {
+  administrador
+  editor
+}
+
+enum estado_volqueta {
+  disponible
+  ocupada
+  mantenimiento
+}
+
+model usuario_admin {
+  id            Int        @id @default(autoincrement())
+  nombre        String
+  email         String     @unique
+  password_hash String
+  rol           rol_admin  @default(editor)
+  creado_en     DateTime   @default(now())
+  volquetas     volqueta[]
+}
+
+model volqueta {
+  id                    Int                      @id @default(autoincrement())
+  titulo                String
+  slug                  String                   @unique
+  descripcion           String?
+  capacidad_m3          Float?
+  capacidad_toneladas   Float?
+  precio_estimado_viaje Float?
+  moneda                String                   @default("COP")
+  placa                 String?
+  modelo_vehiculo       String?
+  ciudad_base           String?
+  departamento_base     String?
+  latitud               Float?
+  longitud              Float?
+  estado                estado_volqueta          @default(disponible)
+  destacado             Boolean                  @default(false)
+  creado_en             DateTime                 @default(now())
+  actualizado_en        DateTime                 @updatedAt
+  usuario_admin_id      Int?
+  usuario_admin         usuario_admin?           @relation(fields: [usuario_admin_id], references: [id], onDelete: SetNull)
+  fotos                 foto_volqueta[]
+  caracteristicas       caracteristica_volqueta[]
+  leads                 contacto_lead[]
+  visitas               visita_evento[]
+  contadores            contador_visitas[]
+}
+
+model foto_volqueta {
+  id          Int      @id @default(autoincrement())
+  volqueta_id Int
+  volqueta    volqueta @relation(fields: [volqueta_id], references: [id], onDelete: Cascade)
+  url_imagen  String
+  orden       Int      @default(0)
+  es_portada  Boolean  @default(false)
+  creado_en   DateTime @default(now())
+
+  @@index([volqueta_id])
+}
+
+model caracteristica_volqueta {
+  id          Int      @id @default(autoincrement())
+  volqueta_id Int
+  volqueta    volqueta @relation(fields: [volqueta_id], references: [id], onDelete: Cascade)
+  nombre      String
+  valor       String
+
+  @@index([volqueta_id])
+}
+
+model contacto_lead {
+  id          Int       @id @default(autoincrement())
+  volqueta_id Int?
+  volqueta    volqueta? @relation(fields: [volqueta_id], references: [id], onDelete: SetNull)
+  nombre      String
+  telefono    String
+  email       String?
+  mensaje     String
+  atendido    Boolean   @default(false)
+  creado_en   DateTime  @default(now())
+
+  @@index([volqueta_id])
+}
+
+model visita_evento {
+  id          Int       @id @default(autoincrement())
+  volqueta_id Int?
+  volqueta    volqueta? @relation(fields: [volqueta_id], references: [id], onDelete: SetNull)
+  ip_hash     String
+  user_agent  String?
+  referer     String?
+  creado_en   DateTime  @default(now())
+
+  @@index([volqueta_id])
+  @@index([ip_hash])
+}
+
+model contador_visitas {
+  id                   Int       @id @default(autoincrement())
+  volqueta_id          Int?      @unique
+  volqueta             volqueta? @relation(fields: [volqueta_id], references: [id], onDelete: Cascade)
+  total_visitas        Int       @default(0)
+  ultima_actualizacion DateTime  @updatedAt
+}
+
+model configuracion_sitio {
+  id                      Int     @id @default(autoincrement())
+  nombre_empresa          String?
+  telefono_contacto       String?
+  whatsapp                String?
+  correo_contacto         String?
+  redes_sociales          Json?
+  meta_descripcion_default String?
+}
+
+// Bloques de contenido editables del sitio (hero, cintas en movimiento, etc.)
+model contenido_sitio {
+  id             Int      @id @default(autoincrement())
+  clave          String   @unique
+  valor          String
+  actualizado_en DateTime @updatedAt
+}
