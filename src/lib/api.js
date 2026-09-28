@@ -188,6 +188,26 @@ export const adminFotos = {
   marcarPortada: (id) => adminFetch(`/admin/fotos/${id}/portada`, { method: 'PATCH' }),
 }
 
+export const NOTA_PRECIO_DEFECTO =
+  'Dentro del pueblo: tarifa base. Fuera del pueblo el valor depende de la distancia y el tipo de material.'
+
+export function formatoCOP(n) {
+  return `$${Number(n).toLocaleString('es-CO')}`
+}
+
+// Precio abierto: desde (pueblo) hasta (fuera, según distancia/material).
+// Devuelve { linea, rango, nota } o null si no hay precio.
+export function textoPrecio(v) {
+  const desde = v.precio_desde ?? v.precio_estimado_viaje ?? null
+  const hasta = v.precio_hasta ?? null
+  if (desde == null) return null
+  const nota = v.precio_nota || NOTA_PRECIO_DEFECTO
+  if (hasta != null && hasta !== desde) {
+    return { linea: `Desde ${formatoCOP(desde)}`, rango: `${formatoCOP(desde)} – ${formatoCOP(hasta)}`, nota }
+  }
+  return { linea: formatoCOP(desde), rango: formatoCOP(desde), nota }
+}
+
 // URL absoluta para fotos (las locales viven en el backend).
 export function urlFoto(url) {
   if (!url) return ''

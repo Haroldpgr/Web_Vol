@@ -56,12 +56,16 @@ function extraerCampos(body) {
     datos.descripcion =
       body.descripcion === null || body.descripcion === '' ? null : String(body.descripcion).slice(0, 5000)
   }
-  for (const k of ['capacidad_m3', 'capacidad_toneladas', 'precio_estimado_viaje']) {
+  for (const k of ['capacidad_m3', 'capacidad_toneladas', 'precio_estimado_viaje', 'precio_desde', 'precio_hasta']) {
     if (body[k] !== undefined) {
       const n = numONull(body[k])
       if (n === undefined) errores[k] = 'Debe ser un número válido.'
       else datos[k] = n
     }
+  }
+  if (body.precio_nota !== undefined) {
+    datos.precio_nota =
+      body.precio_nota === null || body.precio_nota === '' ? null : String(body.precio_nota).slice(0, 500)
   }
   for (const k of ['moneda', 'placa', 'modelo_vehiculo', 'ciudad_base', 'departamento_base']) {
     const t = texto(k)

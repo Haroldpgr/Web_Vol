@@ -36,6 +36,9 @@ model volqueta {
   capacidad_m3          Float?
   capacidad_toneladas   Float?
   precio_estimado_viaje Float?
+  precio_desde          Float?
+  precio_hasta          Float?
+  precio_nota           String?
   moneda                String                   @default("COP")
   placa                 String?
   modelo_vehiculo       String?

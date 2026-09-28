@@ -2,7 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Card from '../components/Card.jsx'
-import { fetchCiudades, fetchVolquetas } from '../lib/api.js'
+import { fetchCiudades, fetchVolquetas, textoPrecio } from '../lib/api.js'
 import { setSeo, siteUrl } from '../lib/seo.js'
 
 const MIN_PRESETS = [
@@ -12,10 +12,6 @@ const MIN_PRESETS = [
   { label: '14+ m³', value: '14' },
 ]
 
-function formatPrecio(v) {
-  if (v === null || v === undefined) return null
-  return `$${Number(v).toLocaleString('es-CO')} / viaje est.`
-}
 
 function Filtros({ ciudad, min, max, ciudades, onChange, onLimpiar, hayFiltros }) {
   return (
@@ -426,7 +422,7 @@ export default function Volquetas() {
                         ? `${v.ciudad_base}, ${v.departamento_base}`
                         : (v.ciudad_base ?? 'Colombia'),
                       estado: v.estado,
-                      precio: formatPrecio(v.precio_estimado_viaje),
+                      precio: (() => { const p = textoPrecio(v); return p ? `${p.linea} / viaje` : null })(),
                       slug: v.slug,
                     }}
                   />

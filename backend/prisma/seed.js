@@ -142,8 +142,16 @@ async function main() {
     },
   ]
 
+  const NOTA_PRECIO =
+    'Dentro del pueblo: tarifa base. Fuera del pueblo el valor depende de la distancia y el tipo de material, cotízalo por WhatsApp.'
+
   for (const v of volquetasData) {
     const { fotos, caracteristicas, ...datos } = v
+    if (datos.precio_estimado_viaje != null && datos.precio_desde === undefined) {
+      datos.precio_desde = datos.precio_estimado_viaje
+      datos.precio_hasta = Math.round((datos.precio_estimado_viaje * 1.45) / 10000) * 10000
+      datos.precio_nota = NOTA_PRECIO
+    }
     const volqueta = await prisma.volqueta.upsert({
       where: { slug: datos.slug },
       update: { ...datos },

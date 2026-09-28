@@ -37,6 +37,9 @@ export default function VolquetaForm({ inicial = null, onGuardar, guardando = fa
     capacidad_m3: inicial?.capacidad_m3 ?? '',
     capacidad_toneladas: inicial?.capacidad_toneladas ?? '',
     precio_estimado_viaje: inicial?.precio_estimado_viaje ?? '',
+    precio_desde: inicial?.precio_desde ?? inicial?.precio_estimado_viaje ?? '',
+    precio_hasta: inicial?.precio_hasta ?? '',
+    precio_nota: inicial?.precio_nota ?? '',
     placa: inicial?.placa ?? '',
     modelo_vehiculo: inicial?.modelo_vehiculo ?? '',
     ciudad_base: inicial?.ciudad_base ?? 'Aguazul',
@@ -66,7 +69,7 @@ export default function VolquetaForm({ inicial = null, onGuardar, guardando = fa
       setErrorLocal('Ponle un nombre a la volqueta para continuar.')
       return
     }
-    for (const k of ['capacidad_m3', 'capacidad_toneladas', 'precio_estimado_viaje']) {
+    for (const k of ['capacidad_m3', 'capacidad_toneladas', 'precio_estimado_viaje', 'precio_desde', 'precio_hasta']) {
       if (form[k] !== '' && form[k] !== null && !Number.isFinite(Number(form[k]))) {
         setErrorLocal('Revisa los números: capacidad, toneladas y precio deben ser válidos.')
         return
@@ -88,12 +91,19 @@ export default function VolquetaForm({ inicial = null, onGuardar, guardando = fa
     setForm((f) => ({ ...f, capacidad_m3: m3, capacidad_toneladas: t }))
   }
 
+  const [modeloOtro, setModeloOtro] = useState(false)
   const modeloBase = MODELOS.find((m) => (form.modelo_vehiculo || '').startsWith(m)) ?? ''
-  const modeloEsOtro = form.modelo_vehiculo !== '' && modeloBase === ''
+  const modeloEsOtro = modeloOtro || (form.modelo_vehiculo !== '' && modeloBase === '')
   const elegirModelo = (e) => {
     const v = e.target.value
-    if (v === '__otro__') setForm((f) => ({ ...f, modelo_vehiculo: '' }))
-    else setForm((f) => ({ ...f, modelo_vehiculo: v }))
+    if (v === '__otro__') {
+      setModeloOtro(true)
+      // Si venía de un modelo de lista, limpia para escribir; si ya era texto propio, consérvalo.
+      setForm((f) => (MODELOS.some((m) => f.modelo_vehiculo.startsWith(m)) ? { ...f, modelo_vehiculo: '' } : f))
+    } else {
+      setModeloOtro(false)
+      setForm((f) => ({ ...f, modelo_vehiculo: v }))
+    }
   }
 
   const selectClase =
@@ -163,16 +173,44 @@ export default function VolquetaForm({ inicial = null, onGuardar, guardando = fa
             onChange={set('capacidad_toneladas')}
             placeholder="22"
           />
-          <Input
-            label="Precio estimado por viaje (COP)"
-            id="vq-precio"
-            type="number"
-            min="0"
-            step="1000"
-            value={form.precio_estimado_viaje ?? ''}
-            onChange={set('precio_estimado_viaje')}
-            placeholder="450000"
-          />
+          <div className="md:col-span-2 rounded-xl border border-dashed border-neutral-300 bg-neutral-50 p-4">
+            <p className="text-sm font-extrabold text-industrial">Precio abierto por viaje</p>
+            <p className="mt-0.5 text-xs text-neutral-500">
+              Base dentro del pueblo y tope fuera: depende de distancia y material.
+            </p>
+            <div className="mt-3 grid gap-4 sm:grid-cols-2">
+              <Input
+                label="¿Cuánto vale dentro del pueblo? (COP)"
+                id="vq-desde"
+                type="number"
+                min="0"
+                step="1000"
+                value={form.precio_desde ?? ''}
+                onChange={set('precio_desde')}
+                placeholder="450000"
+              />
+              <Input
+                label="¿Hasta cuánto fuera? (opcional)"
+                id="vq-hasta"
+                type="number"
+                min="0"
+                step="1000"
+                value={form.precio_hasta ?? ''}
+                onChange={set('precio_hasta')}
+                placeholder="650000"
+              />
+            </div>
+            <div className="mt-3">
+              <TextArea
+                label="Aclaración del precio (se muestra al cliente)"
+                id="vq-nota"
+                rows={2}
+                value={form.precio_nota ?? ''}
+                onChange={set('precio_nota')}
+                placeholder="Dentro del pueblo: tarifa base. Fuera del pueblo el valor depende de la distancia y el tipo de material."
+              />
+            </div>
+          </div>
           <Input
             label="Placa del vehículo"
             id="vq-placa"

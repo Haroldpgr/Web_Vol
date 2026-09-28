@@ -6,17 +6,12 @@ import Card from '../components/Card.jsx'
 import Gallery from '../components/Gallery.jsx'
 import QuoteForm from '../components/QuoteForm.jsx'
 import Reveal from '../components/Reveal.jsx'
-import { fetchConfiguracion, fetchVolquetas, fetchVolqueta } from '../lib/api.js'
+import { fetchConfiguracion, fetchVolquetas, fetchVolqueta, textoPrecio } from '../lib/api.js'
 import { removeJsonLd, schemaFichaVolqueta, setJsonLd, setSeo, siteUrl } from '../lib/seo.js'
 
 const MapPatio = lazy(() => import('../components/MapPatio.jsx'))
 
 const WHATSAPP_FALLBACK = '573001234567'
-
-function formatPrecio(v) {
-  if (v === null || v === undefined) return null
-  return `$${Number(v).toLocaleString('es-CO')}`
-}
 
 function WhatsAppIcon({ className = 'h-6 w-6' }) {
   return (
@@ -137,7 +132,7 @@ export default function VolquetaDetalle() {
       ?.valor.split(',')
       .map((m) => m.trim())
       .filter(Boolean) ?? []
-  const precio = formatPrecio(v.precio_estimado_viaje)
+  const precio = textoPrecio(v)
 
   return (
     <div className="min-h-screen bg-neutral-100">
@@ -264,10 +259,13 @@ export default function VolquetaDetalle() {
               {precio && (
                 <>
                   <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
-                    Precio estimado
+                    Precio por viaje
                   </p>
-                  <p className="mt-1 text-3xl font-extrabold text-industrial">{precio}</p>
-                  <p className="text-xs text-neutral-500">por viaje · {v.moneda}</p>
+                  <p className="mt-1 text-3xl font-extrabold text-industrial">{precio.rango}</p>
+                  <p className="text-xs text-neutral-500">{v.moneda} · según distancia y material</p>
+                  <p className="mt-3 rounded-xl bg-brand-50 px-3 py-2 text-xs leading-relaxed text-brand-dark">
+                    {precio.nota}
+                  </p>
                 </>
               )}
               <a

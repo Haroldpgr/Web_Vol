@@ -6,7 +6,7 @@ import Card from '../components/Card.jsx'
 import Cinta from '../components/Cinta.jsx'
 import Opiniones from '../components/Opiniones.jsx'
 import Reveal from '../components/Reveal.jsx'
-import { API_URL, fetchConfiguracion, fetchVolquetas } from '../lib/api.js'
+import { API_URL, fetchConfiguracion, fetchVolquetas, textoPrecio } from '../lib/api.js'
 import { setSeo, siteUrl } from '../lib/seo.js'
 
 const MapPatio = lazy(() => import('../components/MapPatio.jsx'))
@@ -83,7 +83,7 @@ function aCard(v) {
     capacidadToneladas: v.capacidad_toneladas,
     ciudadBase: v.departamento_base ? `${v.ciudad_base}, ${v.departamento_base}` : (v.ciudad_base ?? ''),
     estado: v.estado,
-    precio: v.precio_estimado_viaje != null ? `$${Number(v.precio_estimado_viaje).toLocaleString('es-CO')} / viaje est.` : null,
+    precio: (() => { const p = textoPrecio(v); return p ? `${p.linea} / viaje` : null })(),
     slug: v.slug,
   }
 }
