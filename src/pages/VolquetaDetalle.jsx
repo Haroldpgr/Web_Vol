@@ -171,7 +171,7 @@ export default function VolquetaDetalle() {
               </h1>
               <p className="mt-1 text-sm text-neutral-600">
                 {v.ciudad_base}
-                {v.departamento_base ? `, ${v.departamento_base}` : ''} · Patio base
+                {v.departamento_base ? `, ${v.departamento_base}` : ''}
               </p>
               <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {[
@@ -228,7 +228,7 @@ export default function VolquetaDetalle() {
             {/* 5 + 6. Mapa + cómo llegar */}
             {tieneGps && (
               <section className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm md:p-6">
-                <h2 className="text-lg font-extrabold text-industrial">Patio base</h2>
+                <h2 className="text-lg font-extrabold text-industrial">Ubicación base</h2>
                 <p className="mb-3 mt-1 text-sm text-neutral-600">
                   {v.ciudad_base}, {v.departamento_base}
                 </p>

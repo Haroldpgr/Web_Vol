@@ -216,7 +216,7 @@ async function main() {
   // Contenidos editables del inicio (hero, cintas en movimiento).
   const contenidosDefecto = {
     hero_titulo: 'Volquetas para tu obra,',
-    hero_resaltado: 'sin vueltas',
+    hero_resaltado: 'a tiempo',
     hero_subtitulo:
       'Arena, gravilla, triturado y escombros con flota local y patio base en Aguazul. Cotiza al instante por WhatsApp.',
     hero_imagen:

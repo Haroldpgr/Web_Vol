@@ -244,24 +244,35 @@ router.post('/:id/fotos', subir.array('fotos', 10), async (req, res, next) => {
     }
     const base = volqueta.fotos.length > 0 ? Math.max(...volqueta.fotos.map((f) => f.orden)) + 1 : 0
     const hayPortada = volqueta.fotos.some((f) => f.es_portada)
+    const detalle = (e) => String((e && e.message) || e).slice(0, 200)
     const creadas = []
     for (let i = 0; i < req.files.length; i++) {
       const file = req.files[i]
-      const { url } = await guardarImagen({
-        buffer: file.buffer,
-        nombreOriginal: file.originalname,
-        mimetype: file.mimetype,
-      })
-      creadas.push(
-        await prisma.foto_volqueta.create({
-          data: {
-            volqueta_id: id,
-            url_imagen: url,
-            orden: base + i,
-            es_portada: !hayPortada && i === 0,
-          },
-        }),
-      )
+      let url
+      try {
+        ;({ url } = await guardarImagen({
+          buffer: file.buffer,
+          nombreOriginal: file.originalname,
+        }))
+      } catch (e) {
+        console.error('[fotos] guardarImagen:', e)
+        return res.status(500).json({ ok: false, error: 'No se pudo guardar la imagen.', detalle: detalle(e) })
+      }
+      try {
+        creadas.push(
+          await prisma.foto_volqueta.create({
+            data: {
+              volqueta_id: id,
+              url_imagen: url,
+              orden: base + i,
+              es_portada: !hayPortada && i === 0,
+            },
+          }),
+        )
+      } catch (e) {
+        console.error('[fotos] create:', e)
+        return res.status(500).json({ ok: false, error: 'No se pudo registrar la foto.', detalle: detalle(e) })
+      }
     }
     return res.status(201).json({ ok: true, data: creadas })
   } catch (err) {

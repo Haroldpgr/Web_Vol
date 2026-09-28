@@ -5,6 +5,7 @@ const items = [
   { to: '/admin', fin: true, label: 'Dashboard' },
   { to: '/admin/volquetas', fin: false, label: 'Volquetas' },
   { to: '/admin/mensajes', fin: false, label: 'Mensajes' },
+  { to: '/admin/testimonios', fin: false, label: 'Opiniones' },
   { to: '/admin/configuracion', fin: false, label: 'Configuración' },
 ]
 

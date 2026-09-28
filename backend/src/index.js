@@ -11,6 +11,8 @@ app.use(express.json())
 const configuracionRouter = require('./routes/configuracion')
 const contactoRouter = require('./routes/contacto')
 const seoRouter = require('./routes/seo')
+const testimoniosRouter = require('./routes/testimonios')
+const adminTestimoniosRouter = require('./routes/adminTestimonios')
 const authRouter = require('./routes/auth')
 const adminConfigRouter = require('./routes/adminConfig')
 const adminFotosRouter = require('./routes/adminFotos')
@@ -30,6 +32,10 @@ app.get('/health', (req, res) => {
 
 // Zona 10: sitemap y robots (rutas exactas, antes de los 404)
 app.use('/', seoRouter)
+
+// Opiniones de clientes (público) y moderación (protegido)
+app.use('/testimonios', testimoniosRouter)
+app.use('/admin/testimonios', adminAuth, adminTestimoniosRouter)
 
 // Zona 3: catálogo público
 app.use('/volquetas', volquetasRouter)

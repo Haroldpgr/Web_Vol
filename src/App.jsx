@@ -11,6 +11,7 @@ const AdminLayout = lazy(() => import('./admin/AdminLayout.jsx'))
 const Dashboard = lazy(() => import('./admin/Dashboard.jsx'))
 const Login = lazy(() => import('./admin/Login.jsx'))
 const Mensajes = lazy(() => import('./admin/Mensajes.jsx'))
+const Testimonios = lazy(() => import('./admin/Testimonios.jsx'))
 const RequireAdmin = lazy(() => import('./admin/RequireAdmin.jsx'))
 const VolquetaEditar = lazy(() => import('./admin/VolquetaEditar.jsx'))
 const VolquetaNuevo = lazy(() => import('./admin/VolquetaNuevo.jsx'))
@@ -58,6 +59,7 @@ function RutasAnimadas() {
               <Route path="volquetas/nuevo" element={<VolquetaNuevo />} />
               <Route path="volquetas/:id/editar" element={<VolquetaEditar />} />
               <Route path="mensajes" element={<Mensajes />} />
+              <Route path="testimonios" element={<Testimonios />} />
               <Route path="configuracion" element={<Configuracion />} />
             </Route>
           </Route>

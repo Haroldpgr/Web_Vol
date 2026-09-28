@@ -195,6 +195,42 @@ export function urlFoto(url) {
   return `${API_URL}${url}`
 }
 
+// --- Opiniones de clientes ---
+export async function fetchTestimonios() {
+  const res = await fetch(`${API_URL}/testimonios`)
+  if (!res.ok) throw new Error('No se pudieron cargar las opiniones')
+  return res.json()
+}
+
+export async function postTestimonio(payload) {
+  const res = await fetch(`${API_URL}/testimonios`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok || data.ok === false) {
+    const error = new Error('No se pudo enviar tu opinión')
+    error.status = res.status
+    error.errores = data.errores ?? {}
+    throw error
+  }
+  return data
+}
+
+export const adminTestimonios = {
+  listar: (filtro = 'todos') => {
+    const q = filtro === 'todos' ? '' : `?aprobado=${filtro === 'aprobados' ? 'true' : 'false'}`
+    return adminFetch(`/admin/testimonios${q}`)
+  },
+  aprobar: (id, aprobado) =>
+    adminFetch(`/admin/testimonios/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ aprobado }),
+    }),
+  eliminar: (id) => adminFetch(`/admin/testimonios/${id}`, { method: 'DELETE' }),
+}
+
 // --- Mensajes y configuración (Zona 9) ---
 export const adminMensajes = {
   listar: (filtro = 'todos') => {

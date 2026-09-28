@@ -34,7 +34,7 @@ export default function MapPatio({ latitud, longitud, titulo }) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <Marker position={posicion} icon={iconoPatio}>
-          <Popup>Patio base — {titulo}</Popup>
+          <Popup>{titulo}</Popup>
         </Marker>
       </MapContainer>
       <a

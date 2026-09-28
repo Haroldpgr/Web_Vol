@@ -104,6 +104,28 @@ export default function Dashboard() {
               ) : (
                 <BarrasTop top={stats.data.data.top} />
               )}
+              <h3 className="mt-6 text-sm font-extrabold text-industrial">
+                Últimos visitantes
+              </h3>
+              {(stats.data.data.recientes ?? []).length === 0 ? (
+                <p className="mt-2 text-sm text-neutral-500">Sin actividad reciente.</p>
+              ) : (
+                <ul className="mt-3 divide-y divide-neutral-100 rounded-xl border border-neutral-100">
+                  {(stats.data.data.recientes ?? []).map((r) => (
+                    <li key={r.id} className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm">
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold text-industrial">{r.dispositivo}</p>
+                        <p className="truncate text-xs text-neutral-500">
+                          {r.titulo} · {r.pagina}
+                        </p>
+                      </div>
+                      <span className="shrink-0 text-xs text-neutral-400">
+                        {new Date(r.creado_en).toLocaleString('es-CO', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </>
           )}
         </section>

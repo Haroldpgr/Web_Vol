@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Button from '../components/Button.jsx'
 import Card from '../components/Card.jsx'
 import Cinta from '../components/Cinta.jsx'
+import Opiniones from '../components/Opiniones.jsx'
 import Reveal from '../components/Reveal.jsx'
 import { API_URL, fetchConfiguracion, fetchVolquetas } from '../lib/api.js'
 import { setSeo, siteUrl } from '../lib/seo.js'
@@ -64,12 +65,6 @@ const PASOS = [
   { n: '1', titulo: 'Elige tu volqueta', desc: 'Por capacidad de tolva: 7, 10 o 14 m³ según tu obra.' },
   { n: '2', titulo: 'Cotiza por WhatsApp', desc: 'Respuesta directa del operador, sin intermediarios.' },
   { n: '3', titulo: 'Recibe el material', desc: 'Despacho desde el patio base en Aguazul.' },
-]
-
-const TESTIMONIOS = [
-  { texto: 'La 14 m³ nos sacó la placa huella en dos días. Puntuales y buen precio.', autor: 'Maestro de obra · Aguazul' },
-  { texto: 'Pedí recebo por WhatsApp en la mañana y en la tarde ya estaba en el lote.', autor: 'Constructora · Yopal' },
-  { texto: 'Serios con el cubicaje. La arena llegó completa y limpia.', autor: 'Cliente · Maní' },
 ]
 
 const FAQS = [
@@ -307,10 +302,10 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl items-start gap-6 px-4 lg:grid-cols-2">
           <Reveal>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-dark">Cobertura</p>
-            <h2 className="mt-1 text-2xl font-extrabold text-industrial md:text-3xl">Base en Aguazul, rutas a la región</h2>
+            <h2 className="mt-1 text-2xl font-extrabold text-industrial md:text-3xl">Operamos desde Aguazul</h2>
             <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-              Nuestro patio base está en Aguazul, Casanare. Despachamos a diario hacia
-              Yopal, Maní, Tauramena y veredas cercanas.
+              Trabajamos desde nuestra casa en Aguazul, Casanare, y despachamos a
+              diario hacia Yopal, Maní, Tauramena y veredas cercanas.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {['Aguazul', 'Yopal', 'Maní', 'Tauramena', 'Monterrey'].map((r) => (
@@ -325,7 +320,7 @@ export default function Home() {
               rel="noreferrer"
               className="mt-5 inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm font-bold text-industrial shadow-sm transition-all hover:-translate-y-0.5 hover:shadow"
             >
-              Cómo llegar a la casa base
+              Cómo llegar
             </a>
           </Reveal>
           <Reveal delay={120}>
@@ -335,32 +330,6 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
-
-      {/* TESTIMONIOS */}
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <Reveal>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-dark">Clientes</p>
-          <h2 className="mt-1 text-2xl font-extrabold text-industrial md:text-3xl">Lo que dicen en la zona</h2>
-        </Reveal>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          {TESTIMONIOS.map((t, i) => (
-            <Reveal key={t.autor} delay={i * 100}>
-              <figure className="h-full rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
-                <div aria-hidden="true" className="flex gap-1 text-brand">
-                  {'★★★★★'.split('').map((s, j) => (
-                    <span key={j}>{s}</span>
-                  ))}
-                </div>
-                <blockquote className="mt-3 text-sm leading-relaxed text-neutral-700">“{t.texto}”</blockquote>
-                <figcaption className="mt-3 text-xs font-bold text-neutral-500">{t.autor}</figcaption>
-              </figure>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* CINTA 2: mensajes en movimiento inverso */}
-      <Cinta items={cinta2} variante="naranja" reversa />
 
       {/* FAQ */}
       <section className="mx-auto max-w-3xl px-4 pb-12">
@@ -379,6 +348,23 @@ export default function Home() {
               </details>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* CINTA 2: mensajes en movimiento inverso */}
+      <Cinta items={cinta2} variante="naranja" reversa />
+
+      {/* OPINIONES */}
+      <section className="mx-auto max-w-6xl px-4 pb-12">
+        <Reveal>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-dark">Clientes</p>
+          <h2 className="mt-1 text-2xl font-extrabold text-industrial md:text-3xl">Opiniones de la zona</h2>
+          <p className="mt-2 max-w-xl text-sm text-neutral-600">
+            Experiencias reales de quienes ya trabajaron con la flota.
+          </p>
+        </Reveal>
+        <div className="mt-6">
+          <Opiniones />
         </div>
       </section>
 
