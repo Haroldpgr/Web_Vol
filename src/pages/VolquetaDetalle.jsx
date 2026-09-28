@@ -122,8 +122,9 @@ export default function VolquetaDetalle() {
     )
   }
 
-  const numero = (config.data?.data?.whatsapp ?? WHATSAPP_FALLBACK).replace(/\D/g, '')
-  const textoWa = `Hola, necesito cotizar un servicio de transporte con la volqueta: ${v.titulo}`
+  const numero = ((v.contacto_whatsapp || config.data?.data?.whatsapp) ?? WHATSAPP_FALLBACK).replace(/\D/g, '')
+  const encargado = v.contacto_nombre || ''
+  const textoWa = `Hola${encargado ? ` ${encargado}` : ''}, necesito cotizar un servicio de transporte con la volqueta: ${v.titulo}`
   const waUrl = `https://wa.me/${numero}?text=${encodeURIComponent(textoWa)}`
   const tieneGps = Number.isFinite(v.latitud) && Number.isFinite(v.longitud)
   const materiales =
@@ -278,7 +279,7 @@ export default function VolquetaDetalle() {
                 Cotizar por WhatsApp
               </a>
               <p className="mt-2 text-center text-xs text-neutral-500">
-                Respuesta directa del operador en Aguazul
+                {encargado ? `Habla directo con ${encargado}` : 'Respuesta directa del operador en Aguazul'}
               </p>
               <div className="mt-4 border-t border-neutral-100 pt-4 text-sm">
                 <div className="flex justify-between py-1">
@@ -291,6 +292,12 @@ export default function VolquetaDetalle() {
                     {v.ciudad_base} · {v.departamento_base}
                   </span>
                 </div>
+                {encargado && (
+                  <div className="flex justify-between py-1">
+                    <span className="text-neutral-500">Encargado</span>
+                    <span className="font-semibold text-industrial">{encargado}</span>
+                  </div>
+                )}
                 <div className="flex justify-between py-1">
                   <span className="text-neutral-500">Fotos</span>
                   <span className="font-semibold text-industrial">{v.fotos?.length ?? 0}</span>

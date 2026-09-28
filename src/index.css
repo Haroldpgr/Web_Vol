@@ -97,6 +97,19 @@ body {
   }
 }
 
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(40px, -30px) scale(1.15);
+  }
+  66% {
+    transform: translate(-30px, 25px) scale(0.92);
+  }
+}
+
 @keyframes kenburns {
   from {
     transform: scale(1);
@@ -128,6 +141,14 @@ body {
   animation: kenburns 22s ease-in-out infinite alternate;
 }
 
+.animate-drift {
+  animation: drift 16s ease-in-out infinite;
+}
+
+.animate-drift-lento {
+  animation: drift 24s ease-in-out infinite reverse;
+}
+
 .animate-spin-slow {
   animation: spin-slow 14s linear infinite;
 }
@@ -156,6 +177,8 @@ body {
   .animate-marquee,
   .animate-marquee-reverse,
   .animate-kenburns,
+  .animate-drift,
+  .animate-drift-lento,
   .animate-spin-slow,
   .skeleton {
     animation: none;

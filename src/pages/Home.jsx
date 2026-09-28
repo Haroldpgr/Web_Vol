@@ -6,7 +6,7 @@ import Card from '../components/Card.jsx'
 import Cinta from '../components/Cinta.jsx'
 import Opiniones from '../components/Opiniones.jsx'
 import Reveal from '../components/Reveal.jsx'
-import { API_URL, fetchConfiguracion, fetchVolquetas, textoPrecio } from '../lib/api.js'
+import { API_URL, fetchConfiguracion, fetchVolquetas, fetchVisitasTotal, textoPrecio } from '../lib/api.js'
 import { setSeo, siteUrl } from '../lib/seo.js'
 
 const MapPatio = lazy(() => import('../components/MapPatio.jsx'))
@@ -113,6 +113,11 @@ export default function Home() {
     queryFn: () => fetchVolquetas({ orden: 'destacados' }),
     staleTime: 60 * 1000,
   })
+  const visitas = useQuery({
+    queryKey: ['visitas-total'],
+    queryFn: fetchVisitasTotal,
+    staleTime: 60 * 1000,
+  })
 
   const waNumero = (config.data?.data?.whatsapp ?? '573001234567').replace(/\D/g, '')
   const waUrl = `https://wa.me/${waNumero}?text=${encodeURIComponent('Hola, necesito cotizar un servicio de volqueta en Aguazul.')}`
@@ -141,8 +146,9 @@ export default function Home() {
       {/* HERO */}
       <header className="relative overflow-hidden bg-carbon-900 text-white">
         <div aria-hidden="true" className="dots-grid pointer-events-none absolute inset-0 opacity-60" />
-        <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-brand/30 blur-3xl" />
-        <div aria-hidden="true" className="pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-brand-dark/20 blur-3xl" />
+        <div aria-hidden="true" className="animate-drift pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-brand/30 blur-3xl" />
+        <div aria-hidden="true" className="animate-drift-lento pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-brand-dark/20 blur-3xl" />
+        <div aria-hidden="true" className="animate-drift pointer-events-none absolute left-1/2 top-1/3 h-56 w-56 rounded-full bg-brand-light/10 blur-3xl" style={{ animationDelay: '4s' }} />
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 md:py-20 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className="animate-fade-up inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-light ring-1 ring-white/15">
@@ -203,12 +209,13 @@ export default function Home() {
 
       {/* STATS */}
       <section className="mx-auto max-w-6xl px-4">
-        <div className="grid grid-cols-2 gap-3 py-6 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 py-6 md:grid-cols-3 lg:grid-cols-5">
           {[
-            { n: <CountUp hasta={4} />, label: 'Volquetas en flota' },
-            { n: <CountUp hasta={14} sufijo=" m³" />, label: 'Tolva mayor' },
+            { n: <CountUp hasta={flota.data?.total ?? 0} />, label: 'Volquetas publicadas' },
+            { n: <CountUp hasta={Math.max(0, ...((flota.data?.data ?? []).map((x) => x.capacidad_m3 || 0)))} sufijo=" m³" />, label: 'Tolva mayor' },
             { n: <CountUp hasta={6} />, label: 'Materiales' },
             { n: <CountUp hasta={3} />, label: 'Rutas principales' },
+            { n: <CountUp hasta={visitas.data?.data?.total ?? 0} />, label: 'Visitas al sitio' },
           ].map((s, i) => (
             <Reveal key={s.label} delay={i * 80}>
               <div className="rounded-2xl border border-neutral-200 bg-white p-4 text-center shadow-sm">

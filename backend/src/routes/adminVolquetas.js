@@ -71,6 +71,15 @@ function extraerCampos(body) {
     const t = texto(k)
     if (t !== undefined) datos[k] = t === '' ? null : t
   }
+  if (body.contacto_nombre !== undefined) {
+    const t = String(body.contacto_nombre ?? '').slice(0, 120)
+    datos.contacto_nombre = t === '' ? null : t
+  }
+  if (body.contacto_whatsapp !== undefined) {
+    const d = String(body.contacto_whatsapp ?? '').replace(/\D/g, '')
+    if (d !== '' && d.length < 10) errores.contacto_whatsapp = 'El WhatsApp del encargado debe tener al menos 10 dígitos.'
+    else datos.contacto_whatsapp = d === '' ? null : d
+  }
   for (const k of ['latitud', 'longitud']) {
     if (body[k] !== undefined) {
       if (body[k] === null || body[k] === '') datos[k] = null

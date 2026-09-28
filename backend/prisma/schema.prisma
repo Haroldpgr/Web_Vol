@@ -39,6 +39,8 @@ model volqueta {
   precio_desde          Float?
   precio_hasta          Float?
   precio_nota           String?
+  contacto_nombre       String?
+  contacto_whatsapp     String?
   moneda                String                   @default("COP")
   placa                 String?
   modelo_vehiculo       String?
@@ -124,6 +126,9 @@ model configuracion_sitio {
   correo_contacto         String?
   redes_sociales          Json?
   meta_descripcion_default String?
+  nombre_contacto         String?
+  nombre_contacto_2       String?
+  whatsapp_2              String?
 }
 
 // Bloques de contenido editables del sitio (hero, cintas en movimiento, etc.)

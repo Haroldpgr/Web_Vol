@@ -4,6 +4,16 @@ const { extraerContexto, registrarVisita } = require('../lib/visitas')
 
 const router = express.Router()
 
+// GET /visitas/total — total público del sitio (para la portada)
+router.get('/total', async (req, res, next) => {
+  try {
+    const global = await prisma.contador_visitas.findFirst({ where: { volqueta_id: null } })
+    res.json({ data: { total: global?.total_visitas ?? 0 } })
+  } catch (err) {
+    next(err)
+  }
+})
+
 // POST /visitas — registra una visita general (portada) o de una volqueta.
 // Body: { volqueta_id?: number|null }. Con deduplicación de 30 min.
 router.post('/', async (req, res, next) => {

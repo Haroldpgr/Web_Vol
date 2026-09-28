@@ -61,7 +61,38 @@ export default function Contacto() {
             </a>
           )}
           <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
-            <h2 className="text-base font-extrabold text-industrial">Datos de contacto</h2>
+            <h2 className="text-base font-extrabold text-industrial">Contacto de los dueños</h2>
+            <p className="mb-3 mt-1 text-xs text-neutral-500">
+              Escríbele directo al encargado que prefieras.
+            </p>
+            <div className="space-y-2">
+              {[
+                { nombre: c.nombre_contacto || 'Dueño 1', wa: c.whatsapp },
+                { nombre: c.nombre_contacto_2, wa: c.whatsapp_2 },
+              ]
+                .filter((d) => d.wa)
+                .map((d) => {
+                  const num = String(d.wa).replace(/\D/g, '')
+                  return (
+                    <a
+                      key={d.nombre + num}
+                      href={`https://wa.me/${num}?text=${encodeURIComponent(`Hola ${d.nombre}, necesito cotizar un servicio de volqueta en Aguazul.`)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center justify-between gap-2 rounded-xl bg-neutral-50 px-4 py-3 transition-all hover:-translate-y-0.5 hover:bg-green-50 hover:shadow"
+                    >
+                      <span>
+                        <span className="block text-sm font-extrabold text-industrial">{d.nombre}</span>
+                        <span className="block text-xs text-neutral-500">Responde por WhatsApp</span>
+                      </span>
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#25D366] font-extrabold text-white">
+                        →
+                      </span>
+                    </a>
+                  )
+                })}
+            </div>
+            <h2 className="mt-5 text-base font-extrabold text-industrial">Datos de contacto</h2>
             <dl className="mt-3 space-y-2 text-sm">
               <div className="flex justify-between gap-3">
                 <dt className="text-neutral-500">Empresa</dt>

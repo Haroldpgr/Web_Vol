@@ -21,6 +21,9 @@ function FormularioConfig({ datos }) {
     facebook: datos.redes_sociales?.facebook ?? '',
     instagram: datos.redes_sociales?.instagram ?? '',
     meta_descripcion_default: datos.meta_descripcion_default ?? '',
+    nombre_contacto: datos.nombre_contacto ?? '',
+    nombre_contacto_2: datos.nombre_contacto_2 ?? '',
+    whatsapp_2: datos.whatsapp_2 ?? '',
     hero_titulo: datos.contenidos?.hero_titulo ?? '',
     hero_resaltado: datos.contenidos?.hero_resaltado ?? '',
     hero_subtitulo: datos.contenidos?.hero_subtitulo ?? '',
@@ -51,6 +54,9 @@ function FormularioConfig({ datos }) {
         correo_contacto: form.correo_contacto.trim(),
         redes_sociales: { facebook: form.facebook.trim(), instagram: form.instagram.trim() },
         meta_descripcion_default: form.meta_descripcion_default.trim(),
+        nombre_contacto: form.nombre_contacto.trim(),
+        nombre_contacto_2: form.nombre_contacto_2.trim(),
+        whatsapp_2: form.whatsapp_2.trim(),
         contenidos: {
           hero_titulo: form.hero_titulo.trim(),
           hero_resaltado: form.hero_resaltado.trim(),
@@ -87,6 +93,21 @@ function FormularioConfig({ datos }) {
         <Input label="Instagram (URL)" id="cfg-ig" value={form.instagram} onChange={set('instagram')} placeholder="https://instagram.com/..." />
       </div>
       <TextArea label="Descripción para buscadores" id="cfg-meta" rows={2} value={form.meta_descripcion_default} onChange={set('meta_descripcion_default')} />
+
+      <div className="border-t border-neutral-100 pt-4">
+        <h2 className="text-base font-extrabold text-industrial">Dueños del negocio</h2>
+        <p className="mt-1 text-xs text-neutral-500">
+          Aparecen en la página de contacto para que cada cliente elija a quién escribirle.
+        </p>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <Input label="Dueño 1 (nombre)" id="cfg-d1" value={form.nombre_contacto} onChange={set('nombre_contacto')} placeholder="Ej. Don Pedro" />
+          <Input label="Dueño 2 (nombre, opcional)" id="cfg-d2" value={form.nombre_contacto_2} onChange={set('nombre_contacto_2')} placeholder="Ej. Doña María" />
+        </div>
+        <div className="mt-4">
+          <Input label="WhatsApp del dueño 2 (opcional)" id="cfg-wa2" value={form.whatsapp_2} onChange={set('whatsapp_2')} placeholder="3130000000" inputMode="tel" />
+          <p className="mt-1 text-xs text-neutral-500">El WhatsApp principal ya está arriba. Este es el segundo contacto.</p>
+        </div>
+      </div>
 
       <div className="border-t border-neutral-100 pt-4">
         <h2 className="text-base font-extrabold text-industrial">Contenido del inicio</h2>

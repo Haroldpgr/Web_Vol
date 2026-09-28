@@ -44,6 +44,8 @@ export default function VolquetaForm({ inicial = null, onGuardar, guardando = fa
     modelo_vehiculo: inicial?.modelo_vehiculo ?? '',
     ciudad_base: inicial?.ciudad_base ?? 'Aguazul',
     departamento_base: inicial?.departamento_base ?? 'Casanare',
+    contacto_nombre: inicial?.contacto_nombre ?? '',
+    contacto_whatsapp: inicial?.contacto_whatsapp ?? '',
     latitud: inicial?.latitud ?? null,
     longitud: inicial?.longitud ?? null,
     estado: inicial?.estado ?? 'disponible',
@@ -252,6 +254,29 @@ export default function VolquetaForm({ inicial = null, onGuardar, guardando = fa
               value={form.departamento_base ?? ''}
               onChange={set('departamento_base')}
             />
+          </div>
+          <div className="md:col-span-2 rounded-xl border border-dashed border-neutral-300 bg-neutral-50 p-4">
+            <p className="text-sm font-extrabold text-industrial">Encargado de esta volqueta</p>
+            <p className="mt-0.5 text-xs text-neutral-500">
+              Si lo dejas vacío, los clientes escriben al WhatsApp general.
+            </p>
+            <div className="mt-3 grid gap-4 sm:grid-cols-2">
+              <Input
+                label="Nombre del encargado"
+                id="vq-enc-nombre"
+                value={form.contacto_nombre ?? ''}
+                onChange={set('contacto_nombre')}
+                placeholder="Ej. Don Pedro"
+              />
+              <Input
+                label="WhatsApp del encargado"
+                id="vq-enc-wa"
+                value={form.contacto_whatsapp ?? ''}
+                onChange={set('contacto_whatsapp')}
+                placeholder="3130000000"
+                inputMode="tel"
+              />
+            </div>
           </div>
           <Select label="Estado" id="vq-estado" value={form.estado} onChange={set('estado')}>
             <option value="disponible">Disponible (se muestra)</option>

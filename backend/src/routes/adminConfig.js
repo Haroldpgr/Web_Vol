@@ -47,14 +47,20 @@ router.patch('/', async (req, res, next) => {
       correo_contacto,
       redes_sociales,
       meta_descripcion_default,
+      nombre_contacto,
+      nombre_contacto_2,
+      whatsapp_2,
       contenidos,
     } = req.body ?? {}
 
     const errores = {}
-    if (whatsapp !== undefined && whatsapp !== null && whatsapp !== '') {
-      const digitos = String(whatsapp).replace(/\D/g, '')
-      if (digitos.length < 10) errores.whatsapp = 'El WhatsApp debe tener al menos 10 dígitos.'
+    const validaWa = (v, campo) => {
+      if (v !== undefined && v !== null && v !== '') {
+        if (String(v).replace(/\D/g, '').length < 10) errores[campo] = 'Debe tener al menos 10 dígitos.'
+      }
     }
+    validaWa(whatsapp, 'whatsapp')
+    validaWa(whatsapp_2, 'whatsapp_2')
     if (correo_contacto !== undefined && correo_contacto !== null && correo_contacto !== '') {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(correo_contacto))) {
         errores.correo_contacto = 'Correo inválido.'
@@ -78,6 +84,11 @@ router.patch('/', async (req, res, next) => {
     }
     if (meta_descripcion_default !== undefined) {
       datos.meta_descripcion_default = meta_descripcion_default || null
+    }
+    if (nombre_contacto !== undefined) datos.nombre_contacto = nombre_contacto || null
+    if (nombre_contacto_2 !== undefined) datos.nombre_contacto_2 = nombre_contacto_2 || null
+    if (whatsapp_2 !== undefined) {
+      datos.whatsapp_2 = whatsapp_2 ? String(whatsapp_2).replace(/\D/g, '') : null
     }
 
     const config = await prisma.configuracion_sitio.update({

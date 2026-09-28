@@ -65,6 +65,12 @@ export async function postVisita(volquetaId = null) {
   return res.json()
 }
 
+export async function fetchVisitasTotal() {
+  const res = await fetch(`${API_URL}/visitas/total`)
+  if (!res.ok) throw new Error('No se pudo cargar el total de visitas')
+  return res.json()
+}
+
 export async function fetchAdminStats(token) {
   const res = await fetch(`${API_URL}/admin/estadisticas/visitas`, {
     headers: { Authorization: `Bearer ${token}` },
